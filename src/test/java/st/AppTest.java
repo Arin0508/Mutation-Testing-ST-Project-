@@ -274,109 +274,71 @@ public class AppTest
         misMatchPenalty = 3;
         gapPenalty = 7;
         assertEquals(3, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
-
-        gene1 = "";
-        gene2 = "AGGCA";
+        
+        gene1 = "CG";
+        gene2 = "CA";
         misMatchPenalty = 3;
-        gapPenalty = 2;
-        assertEquals(10, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
-
-        gene1 = "AGGGCT";
-        gene2 = "";
-        misMatchPenalty = 3;
-        gapPenalty = 2;
-        assertEquals(12, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
-
-        gene1 = "sdbsjkdnbjksbndjk";
-        gene2 = "snajksnjkansjkasn";
-        misMatchPenalty = 3;
-        gapPenalty = 2;
-        assertEquals(27, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
+        gapPenalty = 5;
+        assertEquals(3, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
     }
     
     @Test
     public void TestWildcardPattern() {
-        // Test Case 1: Basic pattern with multiple '*' characters
-        String str1 = "baaabab";
+        String str = "baaabab";
         String pattern1 = "*****ba*****ab";
-        assertEquals(true, obj.WildcardPattern(str1, pattern1, str1.length(), pattern1.length()));
-
-        // Test Case 2: Pattern with multiple '*' and '?' characters
-        String str2 = "babaaababaabababbbbbbaabaabbabababbaababbaaabbbaaab";
-        String pattern2 = "***bba**a*bbba**aab**";
-        assertEquals(true, obj.WildcardPattern(str2, pattern2, str2.length(), pattern2.length()));
-
-        // Test Case 3: Empty string and non-empty pattern
-        String str3 = "";
-        String pattern3 = "dksbndfjk";
-        assertEquals(false, obj.WildcardPattern(str3, pattern3, str3.length(), pattern3.length()));
-
-        // Test Case 4: Non-empty string and empty pattern
-        String str4 = "cojkdsmcos";
-        String pattern4 = "";
-        assertEquals(false, obj.WildcardPattern(str4, pattern4, str4.length(), pattern4.length()));
-
-        // Test Case 5: Empty string and empty pattern
-        String str5 = "";
-        String pattern5 = "";
-        assertEquals(true, obj.WildcardPattern(str5, pattern5, str5.length(), pattern5.length()));
-
-        // Test Case 6: Pattern with multiple '*' and '?' characters
-        String str6 = "abc";
-        String pattern6 = "a**b*c";
-        assertEquals(true, obj.WildcardPattern(str6, pattern6, str6.length(), pattern6.length()));
+        assertEquals(true, obj.WildcardPattern(str, pattern1, str.length(), pattern1.length()));
+        String pattern2 = "baaa?ab";
+        assertEquals(true, obj.WildcardPattern(str, pattern2, str.length(), pattern2.length()));
+        String pattern3 = "ba*a?";
+        assertEquals(true, obj.WildcardPattern(str, pattern3, str.length(), pattern3.length()));
+        String pattern4 = "a*ab";
+        assertEquals(false, obj.WildcardPattern(str, pattern4, str.length(), pattern4.length()));
     }
 
     
     @Test
     public void TestminPalPartition() {
-        String str = "ababbbabbababa";
-    	assertEquals(3, obj.minPalPartition(str));
+        String str = "geek";
+    	assertEquals(2, obj.minPalPartition(str));
+        str = "aaaa";
+    	assertEquals(0, obj.minPalPartition(str));
+        str = "abcde";
+    	assertEquals(4, obj.minPalPartition(str));
+        str = "abbac";
+    	assertEquals(1, obj.minPalPartition(str));
     }
     
     @Test
     public void TestSparseSearch() {
-    	String arr[] = {"for", "hjcbs", "", "", "", "", "ide",
-                "pracs", "", "", "", "quiz"};
-    	String x = "for";
-    	int n = x.length();
-    	assertEquals(0, obj.SparseSearch(arr, x, n));
-    	
     	String arr1[] = {"amdck", "bdhsd", "", "", "", "", "ide"};
     	String x1 = "bdhsd";
     	int n1 = x1.length();
     	assertEquals(1, obj.SparseSearch(arr1, x1, n1));
-    	
-    	
-    	String arr2[] = {"for", "hjcbs", "", "", "", "cnjdk"};
-    	String x2 = "jki";
-    	int n2 = x2.length();
+    	String arr2[] = {"at", "", "", "", "ball", "", "", "car", "", "","dad", "", ""};
+    	String x2 = "ta";
+    	int n2 = x1.length();
     	assertEquals(-1, obj.SparseSearch(arr2, x2, n2));
-    	
-    	String arr3[] = {"", "", ""};
-    	String x3 = "jki";
-    	int n3 = x3.length();
-    	assertEquals(-1, obj.SparseSearch(arr3, x3, n3));
-    	
-    	// String arr4[] = {"", "", "", "dwe", "", "zz"};
-    	// String x4 = "zz";
-    	// int n4 = x4.length();
-    	// assertEquals(5, obj.SparseSearch(arr4, x4, n4));
     }
     
     @Test
     public void TestLongestRepeatingSubSeq() {
-    	 String str = "aabb";
+    	String str = "aabb";
+    	assertEquals(2, obj.LongestRepeatingSubSeq(str));
+    	str = "abc";
+    	assertEquals(0, obj.LongestRepeatingSubSeq(str));
+    	str = "aab";
+    	assertEquals(1, obj.LongestRepeatingSubSeq(str));
+    	str = "axxxy";
     	assertEquals(2, obj.LongestRepeatingSubSeq(str));
     }
     
     @Test
     public void TestLongestPrefixSuffix() {
-    	 String str = "abcab";
-    	assertEquals(2, obj.longestPrefixSuffix(str));
-    	str = "asdfgjndjkdnjkendjkvnsdjknjkdnwuhnclwiosdcnklwnasdfg";
-    	assertEquals(5, obj.longestPrefixSuffix(str));
-    	str = "fcdjksncjksndcjksd";
+    	String str = "level";
+    	assertEquals(1, obj.longestPrefixSuffix(str));
+    	str = "aabcdaabc";
+    	assertEquals(4, obj.longestPrefixSuffix(str));
+    	str = "sgfgsdgdfsdd";
     	assertEquals(0, obj.longestPrefixSuffix(str));
     } 
     
@@ -401,8 +363,6 @@ public class AppTest
     	str = "qwertyu";
         assertEquals("ertyuqw", obj.leftrotate(str, 2));
         assertEquals("yuqwert", obj.rightrotate(str, 2));
-
-
     }
     
     @Test

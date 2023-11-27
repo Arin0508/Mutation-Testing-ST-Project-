@@ -37,8 +37,6 @@ public class App {
 		}
 	}
 
-	// EDIT DISTANCE
-
 	// KMP ALGORITHM
 	int KMPSearch(String pat, String txt) {
 		int M = pat.length();
@@ -102,8 +100,6 @@ public class App {
 		return -1;
 	}
 
-	// KMP ALGORITHM
-
 	// RABIN KARP
 	int RabinKarp(String pat, String txt, int q) {
 		int d = 256;
@@ -159,7 +155,6 @@ public class App {
 		}
 		return -1;
 	}
-	// RABIN KARP
 
 	// Z-ALGORITHM
 	int ZAlgorithm(String text, String pattern) {
@@ -236,8 +231,6 @@ public class App {
 		}
 	}
 
-	// Z-ALGORITHM
-
 	// SHORTEST COMMOM SUBSEQUENCE
 	int superSeq(String X, String Y, int n, int m, int[][] lookup) {
 
@@ -259,7 +252,6 @@ public class App {
 
 		return lookup[n][m];
 	}
-	// SHORTEST COMMON SUBSEQUENCE
 
 	// LONGEST COMMON SUBSEQUENCE
 	int LCS(char[] X, char[] Y, int m, int n) {
@@ -286,7 +278,6 @@ public class App {
 	int max(int a, int b) {
 		return (a > b) ? a : b;
 	}
-	// LONGEST COMMON SUBSEQUENCE
 
 	// LONGEST SUBSTRING TO FORM A PALINDROME
 	int longestSubstring(String s, int n) {
@@ -345,7 +336,6 @@ public class App {
 		}
 		return answer;
 	}
-	// LONGEST SUBSTRING TO FORM A PALINDROME
 
 	// LONGEST VALID PARANTHESIS
 	int LVP(String s, int n) {
@@ -407,7 +397,6 @@ public class App {
 		}
 		return maxlength;
 	}
-	// LONGEST VALID PARANTHESIS
 
 	// LONGEST COMMON PREFIX
 	String longestCommonPrefix(String[] a) {
@@ -437,7 +426,6 @@ public class App {
 		String pre = a[0].substring(0, i);
 		return pre;
 	}
-	// LONGEST COMMMON PREFIX
 
 	// LONGEST PALINDROMIC SUBSEQUENCE}
 	int lps(char seq[], int i, int j) {
@@ -459,7 +447,6 @@ public class App {
 		// If the first and last characters do not match
 		return max(lps(seq, i, j - 1), lps(seq, i + 1, j));
 	}
-	// LONGEST PALINDROMIC SUBSEQUENCE
 
 	// MANACHERS ALGORITHM
 	String ManachersAlgorithm(String text) {
@@ -523,7 +510,6 @@ public class App {
 		end = start + maxLPSLength - 1;
 		return text.substring(start, end + 1);
 	}
-	// MANACHERS ALGORITHM
 
 	// BOYER MOORE ALGORITHM
 	int NO_OF_CHARS = 256;
@@ -608,7 +594,6 @@ public class App {
 		}
 		return -1;
 	}
-	// BOYER MOORE ALGORITHM
 
 	// SEQUENCE ALIGNMENT PROBLEM
 	int SequenceAlignment(String x, String y, int pxy, int pgap) {
@@ -706,24 +691,8 @@ public class App {
 				break;
 			}
 		}
-
-		// Printing the final answer
-		// System.out.print("Minimum Penalty in " +
-		// "aligning the genes = ");
-		// System.out.print(dp[m][n] + "\n");
-		// System.out.println("The aligned genes are :");
-		// for (i = id; i <= l; i++)
-		// {
-		// System.out.print((char)xans[i]);
-		// }
-		// System.out.print("\n");
-		// for (i = id; i <= l; i++)
-		// {
-		// System.out.print((char)yans[i]);
-		// }
 		return dp[m][n];
 	}
-	// SEQUENCE ALIGNMENT PROBLEM
 
 	// WILDCARD PATTERN MATCHING
 	boolean WildcardPattern(String str, String pattern,
@@ -779,7 +748,6 @@ public class App {
 
 		return lookup[n][m];
 	}
-	// WILDCARD PATTERN MATCHING
 
 	// PALINDROME PARTITIONING
 	int minPalPartition(String str) {
@@ -844,7 +812,6 @@ public class App {
 		// string. i.e., str[0..n-1]
 		return C[n - 1];
 	}
-	// PALINDROME PARTITIONING
 
 	// SPARSE SEARCH
 	int binarySearch(String arr[], int low, int high, String x) {
@@ -892,7 +859,6 @@ public class App {
 	int SparseSearch(String arr[], String x, int n) {
 		return binarySearch(arr, 0, n - 1, x);
 	}
-	// SPARSE SEARCH
 
 	// LONGEST REPEATING SUBSEQUENCE
 	int LongestRepeatingSubSeq(String str) {
@@ -915,7 +881,6 @@ public class App {
 		}
 		return dp[n][n];
 	}
-	// LONGEST REPEATING SUBSEQUENCE
 
 	// LONGEST PREFIX SUFFIX
 	int longestPrefixSuffix(String s) {
@@ -967,7 +932,6 @@ public class App {
 		// non overlapping parts.
 		return (res > n / 2) ? n / 2 : res;
 	}
-	// LONGEST PREFIX SUFFIX
 
 	// Number of distinct words of size N with at most K contiguous vowels
 	int power(int x, int y, int p) {
@@ -1034,7 +998,6 @@ public class App {
 		}
 		return sum;
 	}
-	// Number of distinct words of size N with at most K contiguous vowels
 
 	// LEFT AND RIGHT ROTATION OF A STRING
 	String leftrotate(String str1, int n) {
@@ -1092,7 +1055,6 @@ public class App {
 		String str2 = String.copyValueOf(str1);
 		return str2;
 	}
-	// Reverse vowels in a given string
 
 	// Horspool BM algorithm pattern searching
 	int repeatedStringMatch(String a, String b) {
