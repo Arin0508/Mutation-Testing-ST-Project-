@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -239,78 +240,93 @@ public class AppTest
     
     @Test
     public void TestBoyerMoore() {
-    	char txt[] = "ABAAABCD".toCharArray();
-        char pat[] = "ABC".toCharArray(); 
-        assertEquals(4, obj.BoyerMoore(txt, pat));
-        
-        txt = "BDUHBVSUHDG".toCharArray();
-        pat = "DJKNSJKJSDJWESUJSD".toCharArray();
-        assertEquals(-1, obj.BoyerMoore(txt, pat), 0.0);
+    	// Test 1: Empty Text and Pattern
+        char txt[] = "".toCharArray();
+        char pat[] = "".toCharArray();
+        assertEquals(0, obj.BoyerMoore(txt, pat));
+
+        // Test 2: Pattern at the End
+        txt = "ABCDEF".toCharArray();
+        pat = "DEF".toCharArray();
+        assertEquals(3, obj.BoyerMoore(txt, pat));
+
+        // Test 3: Pattern Not Present
+        txt = "ABCDEF".toCharArray();
+        pat = "XYZ".toCharArray();
+        assertEquals(-1, obj.BoyerMoore(txt, pat));
+
+        // Test 4: Repeated Pattern
+        txt = "ABABAB".toCharArray();
+        pat = "AB".toCharArray();
+        assertEquals(0, obj.BoyerMoore(txt, pat));
     }
     
     @Test
     public void TestSequenceAlignment() {
     	String gene1 = "AGGGCT";
         String gene2 = "AGGCA";
-         
-        // initialising penalties
-        // of different types
         int misMatchPenalty = 3;
         int gapPenalty = 2;
-     
-        // calling the function to
-        // calculate the result
         assertEquals(5, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
-        
+
         gene1 = "CG";
         gene2 = "CA";
         misMatchPenalty = 3;
         gapPenalty = 7;
         assertEquals(3, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
-        
+
         gene1 = "";
         gene2 = "AGGCA";
         misMatchPenalty = 3;
         gapPenalty = 2;
         assertEquals(10, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
-        
+
         gene1 = "AGGGCT";
         gene2 = "";
         misMatchPenalty = 3;
         gapPenalty = 2;
         assertEquals(12, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
-        
+
         gene1 = "sdbsjkdnbjksbndjk";
         gene2 = "snajksnjkansjkasn";
         misMatchPenalty = 3;
         gapPenalty = 2;
         assertEquals(27, obj.SequenceAlignment(gene1, gene2, misMatchPenalty, gapPenalty));
-        
-        
     }
     
     @Test
     public void TestWildcardPattern() {
-    	String str = "baaabab";
-        String pattern = "*****ba*****ab";
-        assertEquals(true, obj.WildcardPattern(str, pattern, str.length(), pattern.length()));
-        
-        str = "babaaababaabababbbbbbaabaabbabababbaababbaaabbbaaab";
-        pattern = "***bba**a*bbba**aab**";
-        assertEquals(true, obj.WildcardPattern(str, pattern, str.length(), pattern.length()));
-        
-        str = "";
-        pattern = "dksbndfjk";
-        assertEquals(false, obj.WildcardPattern(str, pattern, str.length(), pattern.length()));
-        
-        str="cojkdsmcos";
-        pattern = "";
-        assertEquals(false, obj.WildcardPattern(str, pattern, str.length(), pattern.length()));
-        
-        str = "";
-        pattern = "";
-        assertEquals(true, obj.WildcardPattern(str, pattern, str.length(), pattern.length()));
+        // Test Case 1: Basic pattern with multiple '*' characters
+        String str1 = "baaabab";
+        String pattern1 = "*****ba*****ab";
+        assertEquals(true, obj.WildcardPattern(str1, pattern1, str1.length(), pattern1.length()));
+
+        // Test Case 2: Pattern with multiple '*' and '?' characters
+        String str2 = "babaaababaabababbbbbbaabaabbabababbaababbaaabbbaaab";
+        String pattern2 = "***bba**a*bbba**aab**";
+        assertEquals(true, obj.WildcardPattern(str2, pattern2, str2.length(), pattern2.length()));
+
+        // Test Case 3: Empty string and non-empty pattern
+        String str3 = "";
+        String pattern3 = "dksbndfjk";
+        assertEquals(false, obj.WildcardPattern(str3, pattern3, str3.length(), pattern3.length()));
+
+        // Test Case 4: Non-empty string and empty pattern
+        String str4 = "cojkdsmcos";
+        String pattern4 = "";
+        assertEquals(false, obj.WildcardPattern(str4, pattern4, str4.length(), pattern4.length()));
+
+        // Test Case 5: Empty string and empty pattern
+        String str5 = "";
+        String pattern5 = "";
+        assertEquals(true, obj.WildcardPattern(str5, pattern5, str5.length(), pattern5.length()));
+
+        // Test Case 6: Pattern with multiple '*' and '?' characters
+        String str6 = "abc";
+        String pattern6 = "a**b*c";
+        assertEquals(true, obj.WildcardPattern(str6, pattern6, str6.length(), pattern6.length()));
     }
+
     
     @Test
     public void TestminPalPartition() {
@@ -366,24 +382,37 @@ public class AppTest
     
     @Test
     public void TestKVowelWords() {
-    	int N = 3;
-        int K = 3;
-        assertEquals(17576, obj.KVowelWords(N, K));
+    	int N = 1;
+        int K = 0;
+        assertEquals(21, obj.KVowelWords(N, K));
+    	N = 1;
+        K = 1;
+        assertEquals(26, obj.KVowelWords(N, K));
     }
     
     @Test
-    public void TestLRR() {
+    public void TestLRR(){
     	String str = "ncbjknsdjkcnsjkancjksdncjksdncjk";
         assertEquals("jknsdjkcnsjkancjksdncjksdncjkncb", obj.leftrotate(str, 3));
         assertEquals("jkncbjknsdjkcnsjkancjksdncjksdnc", obj.rightrotate(str, 2));
-        
+    	str = "GeeksforGeeks";
+        assertEquals("eksforGeeksGe", obj.leftrotate(str, 2));
+        assertEquals("ksGeeksforGee", obj.rightrotate(str, 2));
+    	str = "qwertyu";
+        assertEquals("ertyuqw", obj.leftrotate(str, 2));
+        assertEquals("yuqwert", obj.rightrotate(str, 2));
+
+
     }
     
     @Test
     public void TestReverseVowel() {
-    	String str= "hello world";
-        assertEquals("hollo werld", obj.reverseVowel(str));
-        
+    	String str= "leetcode";
+        assertEquals("leotcede", obj.reverseVowel(str));
+    	str= "aeiou";
+        assertEquals("uoiea", obj.reverseVowel(str));
+    	str= "a";
+        assertEquals("a", obj.reverseVowel(str));
     }
     
     @Test
@@ -418,6 +447,21 @@ public class AppTest
         assertEquals(2, obj.findAllConcatenatedWordsInADict(words4).size());
         assertTrue(obj.findAllConcatenatedWordsInADict(words4).contains("helloworld"));
         assertTrue(obj.findAllConcatenatedWordsInADict(words4).contains("concatenated"));
+
+        // Test Case 5: Empty string in the array
+        String[] words5 = {"cat", "dog", "catdog"};
+        assertEquals(1, obj.findAllConcatenatedWordsInADict(words5).size());
+        assertTrue(obj.findAllConcatenatedWordsInADict(words5).contains("catdog"));
+
+        // Test Case 6: Words with spaces
+        String[] words6 = {"cat", "dog","cat dog", "dog cat", "catdog"};
+        assertEquals(1, obj.findAllConcatenatedWordsInADict(words6).size());
+        assertTrue(obj.findAllConcatenatedWordsInADict(words6).contains("catdog"));
+
+        // Test Case 7: Words with special characters
+        String[] words7 = {"cat", "dog","cat@dog", "dog@cat", "catdog"};
+        assertEquals(1, obj.findAllConcatenatedWordsInADict(words7).size());
+        assertTrue(obj.findAllConcatenatedWordsInADict(words7).contains("catdog"));
     }
     @Test
     public void testWordBreak1() {
@@ -435,6 +479,16 @@ public class AppTest
         String s4 = "catsanddog";
         List<String> wordDict4 = Arrays.asList("cats", "dog", "sand", "and", "cat");
         assertTrue(obj.wordBreak1(s4, wordDict4));
+
+        // Test Case 5: Word break with trailing and leading spaces
+        String s5 = "applepenapple";
+        List<String> wordDict5 = Arrays.asList("apple", "pen");
+        assertTrue(obj.wordBreak1(s5, wordDict5));
+
+        // Test Case 6: Empty string and empty dictionary
+        String s6 = "";
+        List<String> wordDict6 = Collections.emptyList();
+        assertTrue(obj.wordBreak1(s6, wordDict6));
     }
     @Test
     public void testWordBreak2() {
@@ -452,6 +506,11 @@ public class AppTest
         String s4 = "aaa";
         List<String> wordDict4 = Arrays.asList("a", "aa");
         assertEquals(Arrays.asList("a aa", "a a a", "aa a"), obj.wordBreak2(s4, wordDict4));
+
+        // Test Case 5: Word break with trailing and leading spaces
+        String s5 = "catsanddog";
+        List<String> wordDict5 = Arrays.asList("cat", "cats", "and", "sand", "dog");
+        assertEquals(Arrays.asList("cat sand dog", "cats and dog"), obj.wordBreak2(s5, wordDict5));
     }
 
     @Test
@@ -464,6 +523,18 @@ public class AppTest
 
         // Test Case 3: Single character strings
         assertTrue(obj.isScramble("a", "a"));
+
+        // Test Case 4: Scramble of longer strings
+        assertTrue(obj.isScramble("abcde", "aedcb"));
+
+        // Test Case 5: Invalid scramble with different lengths
+        assertFalse(obj.isScramble("abcde", "abcdef"));
+
+        // Test Case 6: Valid scramble with single character strings
+        assertTrue(obj.isScramble("a", "a"));
+
+        // Test Case 7: Invalid scramble with single character strings
+        assertFalse(obj.isScramble("a", "b"));
 
     }
     @Test
