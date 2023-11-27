@@ -3,6 +3,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -482,5 +483,48 @@ public class AppTest
         int n3 = 8;
         assertEquals(1, obj.atMostNGivenDigitSet(digits3, n3));
 
+    }
+
+    @Test
+    public void TestminStickers() {
+        String stickers[] = {"with","example","science"};
+        String target = "thehat";
+        assertEquals(3, obj.minStickers(stickers, target));
+        String stickers1[] = {"notice","possible"};
+        String target1 = "basicbasic";
+        assertEquals(-1, obj.minStickers(stickers1, target1));
+    }
+
+    @Test
+    public void TestpalindromePairs() {
+        String words[] = {"abcd","dcba","lls","s","sssll"};
+        List<List<Integer>> ans = new ArrayList<>(Arrays.asList(
+                Arrays.asList(0, 1),
+                Arrays.asList(1, 0),
+                Arrays.asList(3, 2),
+                Arrays.asList(2, 4)
+        ));
+        assertEquals(ans, obj.palindromePairs(words));
+        String words1[] = {"bat","tab","cat"};
+        List<List<Integer>> ans1 = new ArrayList<>(Arrays.asList(
+                Arrays.asList(0, 1),
+                Arrays.asList(1, 0)
+        ));
+        assertEquals(ans1, obj.palindromePairs(words1));
+        String words2[] = {"a",""};
+        List<List<Integer>> ans2 = new ArrayList<>(Arrays.asList(
+                Arrays.asList(1, 0),
+                Arrays.asList(0, 1)
+        ));
+        assertEquals(ans2, obj.palindromePairs(words2));
+    }
+
+    @Test
+    public void TestkSimilarity() {
+        String a = "ab", b = "ba";
+        assertEquals(1, obj.kSimilarity(a, b));
+        a = "abc";
+        b = "bca";
+        assertEquals(2, obj.kSimilarity(a, b));
     }
 }

@@ -1410,8 +1410,213 @@ public class App {
         return false;
     }
 
+	public String reverseStr(String str) {
+		StringBuilder sb = new StringBuilder(str);
+		return sb.reverse().toString();
+	}
 
+	public boolean isPalindrome(String s) {
+		int i = 0;
+		int j = s.length() - 1;
+		while (i <= j) {
+			if (s.charAt(i) != s.charAt(j)) {
+				return false;
+			}
+			i++;
+			j--;
+		}
+		return true;
+	}
 
+	// Returns indices i, j (i!=j) such that words[i] + words[j] is a palindrome
+	public List<List<Integer>> palindromePairs(String[] words) {
+		List<List<Integer>> res = new ArrayList<List<Integer>>();
+		if (words == null || words.length == 0) {
+			return res;
+		}
+		// build the map save the key-val pairs: String - idx
+		HashMap<String, Integer> map = new HashMap<>();
+		for (int i = 0; i < words.length; i++) {
+			map.put(words[i], i);
+		}
+
+		// special cases: "" can be combine with any palindrome string
+		if (map.containsKey("")) {
+			int blankIdx = map.get("");
+			for (int i = 0; i < words.length; i++) {
+				if (isPalindrome(words[i])) {
+					if (i == blankIdx)
+						continue;
+					res.add(Arrays.asList(blankIdx, i));
+					res.add(Arrays.asList(i, blankIdx));
+				}
+			}
+		}
+
+		// find all string and reverse string pairs
+		for (int i = 0; i < words.length; i++) {
+			String cur_r = reverseStr(words[i]);
+			if (map.containsKey(cur_r)) {
+				int found = map.get(cur_r);
+				if (found == i)
+					continue;
+				res.add(Arrays.asList(i, found));
+			}
+		}
+
+		// find the pair s1, s2 that
+		// case1 : s1[0:cut] is palindrome and s1[cut+1:] = reverse(s2) => (s2, s1)
+		// case2 : s1[cut+1:] is palindrome and s1[0:cut] = reverse(s2) => (s1, s2)
+		for (int i = 0; i < words.length; i++) {
+			String cur = words[i];
+			for (int cut = 1; cut < cur.length(); cut++) {
+				if (isPalindrome(cur.substring(0, cut))) {
+					String cut_r = reverseStr(cur.substring(cut));
+					if (map.containsKey(cut_r)) {
+						int found = map.get(cut_r);
+						if (found == i)
+							continue;
+						res.add(Arrays.asList(found, i));
+					}
+				}
+				if (isPalindrome(cur.substring(cut))) {
+					String cut_r = reverseStr(cur.substring(0, cut));
+					if (map.containsKey(cut_r)) {
+						int found = map.get(cut_r);
+						if (found == i)
+							continue;
+						res.add(Arrays.asList(i, found));
+					}
+				}
+			}
+		}
+		// Collections.sort(res, Comparator.comparing(list -> list.get(0)));
+		return res;
+	}
+
+	private boolean empty(int[] freq) {
+		for (int f : freq)
+			if (f > 0)
+				return false;
+		return true;
+	}
+
+	private String toString(int[] freq) {
+		StringBuilder sb = new StringBuilder();
+		char c = 'a';
+		for (int f : freq) {
+			while (f-- > 0)
+				sb.append(c);
+			c++;
+		}
+		return sb.toString();
+	}
+
+	//Forming a target word by using min number of stickers
+	public int minStickers(String[] stickers, String target) {
+		// Optimization 1: Maintain frequency only for characters present in target
+		int[] targetNaiveCount = new int[26];
+		for (char c : target.toCharArray())
+			targetNaiveCount[c - 'a']++;
+		int[] index = new int[26];
+		int N = 0; // no of distinct characters in target
+		for (int i = 0; i < 26; i++)
+			index[i] = targetNaiveCount[i] > 0 ? N++ : -1;
+		int[] targetCount = new int[N];
+		int t = 0;
+		for (int c : targetNaiveCount)
+			if (c > 0) {
+				targetCount[t++] = c;
+			}
+		int[][] stickersCount = new int[stickers.length][N];
+		for (int i = 0; i < stickers.length; i++) {
+			for (char c : stickers[i].toCharArray()) {
+				int j = index[c - 'a'];
+				if (j >= 0)
+					stickersCount[i][j]++;
+			}
+		}
+		// Optimization 2: Remove stickers dominated by some other sticker
+		int start = 0;
+		for (int i = 0; i < stickers.length; i++) {
+			for (int j = start; j < stickers.length; j++)
+				if (j != i) {
+					int k = 0;
+					while (k < N && stickersCount[i][k] <= stickersCount[j][k])
+						k++;
+					if (k == N) {
+						int[] tmp = stickersCount[i];
+						stickersCount[i] = stickersCount[start];
+						stickersCount[start++] = tmp;
+						break;
+					}
+				}
+		}
+		// Perform BFS with target as source and an empty string as destination
+		Queue<int[]> Q = new LinkedList<>();
+		Set<String> visited = new HashSet<>();
+		Q.add(targetCount);
+		int steps = 0;
+		while (!Q.isEmpty()) {
+			steps++;
+			int size = Q.size();
+			while (size-- > 0) {
+				int[] freq = Q.poll();
+				String cur = toString(freq);
+				if (visited.add(cur)) {
+					// Optimization 3: Only use stickers that are capable of removing first
+					// character from current string
+					int first = cur.charAt(0) - 'a';
+					for (int i = start; i < stickers.length; i++)
+						if (stickersCount[i][first] != 0) {
+							int[] next = freq.clone();
+							for (int j = 0; j < N; j++)
+								next[j] = Math.max(next[j] - stickersCount[i][j], 0);
+							if (empty(next))
+								return steps;
+							Q.add(next);
+						}
+				}
+			}
+		}
+		return -1;
+	}
+
+	public int kSimilarity(String s1, String tar) {
+        Queue<String> q = new ArrayDeque<>();
+        q.add(s1);
+        
+        int lvl = 0;
+        while(q.size() > 0){
+            int size = q.size();
+            while(size-- > 0){
+                String s = q.remove();
+                if(s.equals(tar))return lvl;
+                
+                
+                int i = 0;
+                while(s.charAt(i) == tar.charAt(i))i++;
+                
+                int j = i;
+                
+                while(j < s.length()){
+                    if(s.charAt(j) == tar.charAt(i) && tar.charAt(j) != s.charAt(j)){
+                        StringBuilder sb = new StringBuilder(s);
+                        sb.setCharAt(i, s.charAt(j));
+                        sb.setCharAt(j, s.charAt(i));
+                        
+						//A small optimization.
+                        if(sb.toString().equals(tar))return lvl+1;
+                        
+                        q.add(sb.toString());
+                    }
+                    j++;
+                }
+            }
+            lvl++;
+        }
+        return lvl;
+    }
 	// Driver code to test above
 	public static void main(String args[]) {
 
