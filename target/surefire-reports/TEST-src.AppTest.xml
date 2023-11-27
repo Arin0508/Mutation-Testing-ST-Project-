@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="src.AppTest" time="0.037" tests="21" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" name="src.AppTest" time="0.049" tests="27" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="17"/>
     <property name="sun.jnu.encoding" value="ANSI_X3.4-1968"/>
@@ -12,7 +12,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-17-openjdk-amd64/lib"/>
-    <property name="sun.java.command" value="/home/jainav/Work/ST/algorithms/target/surefire/surefirebooter5873633498595880719.jar /home/jainav/Work/ST/algorithms/target/surefire 2023-11-26T22-03-04_186-jvmRun1 surefire8612478989384361339tmp surefire_017385410752029919593tmp"/>
+    <property name="sun.java.command" value="/home/jainav/Work/ST/algorithms/target/surefire/surefirebooter6288838963006626916.jar /home/jainav/Work/ST/algorithms/target/surefire 2023-11-27T12-23-15_215-jvmRun1 surefire5309863806955424787tmp surefire_06688436945864383152tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="/home/jainav/Work/ST/algorithms/target/test-classes:/home/jainav/Work/ST/algorithms/target/classes:/home/jainav/.m2/repository/junit/junit/4.11/junit-4.11.jar:/home/jainav/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/jainav/Work/ST/algorithms/target/surefire/surefirebooter5873633498595880719.jar"/>
+    <property name="surefire.real.class.path" value="/home/jainav/Work/ST/algorithms/target/surefire/surefirebooter6288838963006626916.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="17.0.9+9-Debian-1deb12u1"/>
     <property name="user.name" value="jainav"/>
@@ -52,24 +52,30 @@
     <property name="java.class.version" value="61.0"/>
   </properties>
   <testcase name="TestZAlgorithm" classname="src.AppTest" time="0.001"/>
-  <testcase name="TestEditDistance" classname="src.AppTest" time="0"/>
+  <testcase name="testIsScramble" classname="src.AppTest" time="0"/>
+  <testcase name="testAtMostNGivenDigitSet" classname="src.AppTest" time="0"/>
+  <testcase name="testFindAllConcatenatedWordsInADict" classname="src.AppTest" time="0"/>
+  <testcase name="TestEditDistance" classname="src.AppTest" time="0.001"/>
   <testcase name="TestRabinKarp" classname="src.AppTest" time="0"/>
-  <testcase name="TestLSFP" classname="src.AppTest" time="0.001"/>
+  <testcase name="TestLSFP" classname="src.AppTest" time="0.002"/>
   <testcase name="TestLongestCommonPrefix" classname="src.AppTest" time="0"/>
   <testcase name="TestminPalPartition" classname="src.AppTest" time="0"/>
   <testcase name="TestManachersAlgorithm" classname="src.AppTest" time="0"/>
   <testcase name="TestLongestPrefixSuffix" classname="src.AppTest" time="0"/>
   <testcase name="TestKMPAlgorithm" classname="src.AppTest" time="0"/>
   <testcase name="TestLongestRepeatingSubSeq" classname="src.AppTest" time="0"/>
-  <testcase name="TestLongestPalindromicSubsequence" classname="src.AppTest" time="0"/>
-  <testcase name="TestReverseVowel" classname="src.AppTest" time="0.001"/>
+  <testcase name="TestLongestPalindromicSubsequence" classname="src.AppTest" time="0.001"/>
+  <testcase name="TestReverseVowel" classname="src.AppTest" time="0"/>
   <testcase name="TestLCS" classname="src.AppTest" time="0"/>
   <testcase name="TestLRR" classname="src.AppTest" time="0"/>
-  <testcase name="TestLVP" classname="src.AppTest" time="0.001"/>
+  <testcase name="TestLVP" classname="src.AppTest" time="0"/>
+  <testcase name="testWordBreak1" classname="src.AppTest" time="0"/>
+  <testcase name="testWordBreak2" classname="src.AppTest" time="0.002"/>
   <testcase name="TestKVowelWords" classname="src.AppTest" time="0"/>
-  <testcase name="TestBoyerMoore" classname="src.AppTest" time="0"/>
+  <testcase name="TestBoyerMoore" classname="src.AppTest" time="0.001"/>
   <testcase name="TestWildcardPattern" classname="src.AppTest" time="0"/>
   <testcase name="TestSequenceAlignment" classname="src.AppTest" time="0"/>
   <testcase name="TestRepeatedStringMatch" classname="src.AppTest" time="0"/>
+  <testcase name="TestSparseSearch" classname="src.AppTest" time="0"/>
   <testcase name="TestShortestCommonSequence" classname="src.AppTest" time="0"/>
 </testsuite>

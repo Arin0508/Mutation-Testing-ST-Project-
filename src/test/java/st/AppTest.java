@@ -1,7 +1,10 @@
 package src;
-import java.util.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -314,35 +317,35 @@ public class AppTest
     	assertEquals(3, obj.minPalPartition(str));
     }
     
-    // @Test
-    // public void TestSparseSearch() {
-    // 	String arr[] = {"for", "hjcbs", "", "", "", "", "ide",
-    //             "pracs", "", "", "", "quiz"};
-    // 	String x = "for";
-    // 	int n = x.length();
-    // 	assertEquals(0, obj.SparseSearch(arr, x, n));
+    @Test
+    public void TestSparseSearch() {
+    	String arr[] = {"for", "hjcbs", "", "", "", "", "ide",
+                "pracs", "", "", "", "quiz"};
+    	String x = "for";
+    	int n = x.length();
+    	assertEquals(0, obj.SparseSearch(arr, x, n));
     	
-    // 	String arr1[] = {"amdck", "bdhsd", "", "", "", "", "ide"};
-    // 	String x1 = "bdhsd";
-    // 	int n1 = x1.length();
-    // 	assertEquals(1, obj.SparseSearch(arr1, x1, n1));
+    	String arr1[] = {"amdck", "bdhsd", "", "", "", "", "ide"};
+    	String x1 = "bdhsd";
+    	int n1 = x1.length();
+    	assertEquals(1, obj.SparseSearch(arr1, x1, n1));
     	
     	
-    // 	String arr2[] = {"for", "hjcbs", "", "", "", "cnjdk"};
-    // 	String x2 = "jki";
-    // 	int n2 = x2.length();
-    // 	assertEquals(-1, obj.SparseSearch(arr2, x2, n2));
+    	String arr2[] = {"for", "hjcbs", "", "", "", "cnjdk"};
+    	String x2 = "jki";
+    	int n2 = x2.length();
+    	assertEquals(-1, obj.SparseSearch(arr2, x2, n2));
     	
-    // 	String arr3[] = {"", "", ""};
-    // 	String x3 = "jki";
-    // 	int n3 = x3.length();
-    // 	assertEquals(-1, obj.SparseSearch(arr3, x3, n3));
+    	String arr3[] = {"", "", ""};
+    	String x3 = "jki";
+    	int n3 = x3.length();
+    	assertEquals(-1, obj.SparseSearch(arr3, x3, n3));
     	
-    // 	String arr4[] = {"", "", "", "dwe", "", "zz"};
-    // 	String x4 = "zz";
-    // 	int n4 = x4.length();
-    // 	assertEquals(5, obj.SparseSearch(arr4, x4, n4));
-    // }
+    	// String arr4[] = {"", "", "", "dwe", "", "zz"};
+    	// String x4 = "zz";
+    	// int n4 = x4.length();
+    	// assertEquals(5, obj.SparseSearch(arr4, x4, n4));
+    }
     
     @Test
     public void TestLongestRepeatingSubSeq() {
@@ -392,5 +395,92 @@ public class AppTest
     	a = "cdmnslkd";
     	b = "iwomeiofnmwo";
     	assertEquals(-1, obj.repeatedStringMatch(a, b));
+    }
+    
+    @Test
+    public void testFindAllConcatenatedWordsInADict() {
+        // Test Case 1: Empty array
+        String[] words1 = {};
+        assertEquals(0, obj.findAllConcatenatedWordsInADict(words1).size());
+
+        // Test Case 2: No concatenated words
+        String[] words2 = {"apple", "banana", "orange"};
+        assertEquals(0, obj.findAllConcatenatedWordsInADict(words2).size());
+
+        // Test Case 3: Single concatenated word
+        String[] words3 = {"cat", "dog", "catdog"};
+        assertEquals(1, obj.findAllConcatenatedWordsInADict(words3).size());
+        assertTrue(obj.findAllConcatenatedWordsInADict(words3).contains("catdog"));
+
+        // Test Case 4: Multiple concatenated words
+        String[] words4 = {"hello", "world", "helloworld", "concat", "enated", "concatenated"};
+        assertEquals(2, obj.findAllConcatenatedWordsInADict(words4).size());
+        assertTrue(obj.findAllConcatenatedWordsInADict(words4).contains("helloworld"));
+        assertTrue(obj.findAllConcatenatedWordsInADict(words4).contains("concatenated"));
+    }
+    @Test
+    public void testWordBreak1() {
+        // Test Case 2: No valid word break
+        String s2 = "catsandog";
+        List<String> wordDict2 = Arrays.asList("cats", "dog", "sand", "and", "cat");
+        assertFalse(obj.wordBreak1(s2, wordDict2));
+
+        // Test Case 3: Valid word break
+        String s3 = "applepenapple";
+        List<String> wordDict3 = Arrays.asList("apple", "pen");
+        assertTrue(obj.wordBreak1(s3, wordDict3));
+        
+        // Test Case 4: Complex word break
+        String s4 = "catsanddog";
+        List<String> wordDict4 = Arrays.asList("cats", "dog", "sand", "and", "cat");
+        assertTrue(obj.wordBreak1(s4, wordDict4));
+    }
+    @Test
+    public void testWordBreak2() {
+        // Test Case 2: No valid word break
+        String s2 = "catsandog";
+        List<String> wordDict2 = Arrays.asList("cats","dog","sand","and","cat");
+        assertEquals(0, obj.wordBreak2(s2, wordDict2).size());
+
+        // Test Case 3: Valid word break
+        String s3 = "catsanddog";
+        List<String> wordDict3 = Arrays.asList("cat", "cats", "and", "sand", "dog");
+        assertEquals(Arrays.asList("cat sand dog", "cats and dog"), obj.wordBreak2(s3, wordDict3));
+
+        // Test Case 4: Complex word break with duplicates
+        String s4 = "aaa";
+        List<String> wordDict4 = Arrays.asList("a", "aa");
+        assertEquals(Arrays.asList("a aa", "a a a", "aa a"), obj.wordBreak2(s4, wordDict4));
+    }
+
+    @Test
+    public void testIsScramble() {
+        // Test Case 1: Valid scramble
+        assertTrue(obj.isScramble("great", "rgeat"));
+
+        // Test Case 2: Invalid scramble
+        assertFalse(obj.isScramble("abcde", "caebd"));
+
+        // Test Case 3: Single character strings
+        assertTrue(obj.isScramble("a", "a"));
+
+    }
+    @Test
+    public void testAtMostNGivenDigitSet() {
+        // Test Case 1
+        String[] digits1 = {"1", "3", "5", "7"};
+        int n1 = 100;
+        assertEquals(20, obj.atMostNGivenDigitSet(digits1, n1));
+
+        // Test Case 2
+        String[] digits2 = {"1", "4", "9"};
+        int n2 = 1000000000;
+        assertEquals(29523, obj.atMostNGivenDigitSet(digits2, n2));
+
+        // Test Case 3
+        String[] digits3 = {"7"};
+        int n3 = 8;
+        assertEquals(1, obj.atMostNGivenDigitSet(digits3, n3));
+
     }
 }
