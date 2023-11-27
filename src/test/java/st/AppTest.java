@@ -18,62 +18,6 @@ public class AppTest {
     App obj = new App();
 
     @Test
-    public void TestEditDistance() {
-        String str1 = "";
-        String str2 = "";
-
-        int n = str1.length(), m = str2.length();
-        int[][] dp = new int[n + 1][m + 1];
-        for (int i = 0; i < n + 1; i++)
-            Arrays.fill(dp[i], -1);
-        assertEquals(0, obj.EditDistance(str1, str2, n, m, dp), 0.0);
-
-        str1 = "algorithm";
-        str2 = "altruistic";
-
-        n = str1.length();
-        m = str2.length();
-        dp = new int[n + 1][m + 1];
-        for (int i = 0; i < n + 1; i++)
-            Arrays.fill(dp[i], -1);
-        assertEquals(6, obj.EditDistance(str1, str2, n, m, dp), 0.0);
-
-        str1 = "editdistanceusingdynamicprogramming";
-        str2 = "edit";
-
-        n = str1.length();
-        m = str2.length();
-        dp = new int[n + 1][m + 1];
-        for (int i = 0; i < n + 1; i++)
-            Arrays.fill(dp[i], -1);
-        assertEquals(31, obj.EditDistance(str1, str2, n, m, dp), 0.0);
-
-    }
-
-    @Test
-    public void TestKMPAlgorithm() {
-        String txt = "ABCFGHIJKLMNOPQRSTUVWXZXYZOPQRSTUWXYZ";
-        String pat = "XYZOPQRS";
-        assertEquals(23, obj.KMPSearch(pat, txt), 0.0);
-
-        txt = "ABCDXYEFGHIJK";
-        pat = "ABCDX";
-        assertEquals(0, obj.KMPSearch(pat, txt), 0.0);
-
-        txt = "KLMNOPQRSTUVWXZABCFGHIJKLMNOP";
-        pat = "XYZOPQRSUVW";
-        assertEquals(-1, obj.KMPSearch(pat, txt), 0.0);
-
-        txt = "ASDFGH";
-        pat = "GHI";
-        assertEquals(-1, obj.KMPSearch(pat, txt), 0.0);
-
-        txt = "XZXZXZXZXZXZXZXY";
-        pat = "XZXZXY";
-        assertEquals(10, obj.KMPSearch(pat, txt), 0.0);
-    }
-
-    @Test
     public void TestRabinKarp() {
         String txt = "ABCFGHIJKLMNOPQRSTUVWXZXYZOPQRSTUWXYZ";
         String pat = "XYZOPQRS";
@@ -117,18 +61,26 @@ public class AppTest {
     }
 
     @Test
-    public void TestShortestCommonSequence() {
-        String X = "AGGTB";
-        String Y = "GXTXAYB";
+    public void TestKMPAlgorithm() {
+        String txt = "ABCFGHIJKLMNOPQRSTUVWXZXYZOPQRSTUWXYZ";
+        String pat = "XYZOPQRS";
+        assertEquals(23, obj.KMPSearch(pat, txt), 0.0);
 
-        int[][] lookup = new int[X.length() + 1][Y.length() + 1];
+        txt = "ABCDXYEFGHIJK";
+        pat = "ABCDX";
+        assertEquals(0, obj.KMPSearch(pat, txt), 0.0);
 
-        assertEquals(9, obj.superSeq(X, Y, X.length(), Y.length(), lookup), 0.0);
+        txt = "KLMNOPQRSTUVWXZABCFGHIJKLMNOP";
+        pat = "XYZOPQRSUVW";
+        assertEquals(-1, obj.KMPSearch(pat, txt), 0.0);
 
-        X = "apqrstu";
-        Y = "kplrmntuo";
-        lookup = new int[X.length() + 1][Y.length() + 1];
-        assertEquals(12, obj.superSeq(X, Y, X.length(), Y.length(), lookup), 0.0);
+        txt = "ASDFGH";
+        pat = "GHI";
+        assertEquals(-1, obj.KMPSearch(pat, txt), 0.0);
+
+        txt = "XZXZXZXZXZXZXZXY";
+        pat = "XZXZXY";
+        assertEquals(10, obj.KMPSearch(pat, txt), 0.0);
     }
 
     @Test
@@ -160,6 +112,40 @@ public class AppTest {
     }
 
     @Test
+    public void TestLongestPalindromicSubsequence() {
+        String seq = "abcdefghijklmnopqrstuvwxy";
+        int n = seq.length();
+        assertEquals(1, obj.lps(seq.toCharArray(), 0, n - 1), 0.0);
+
+        seq = "abcdefghijabcdefghijabcdefghij";
+        n = seq.length();
+        assertEquals(5, obj.lps(seq.toCharArray(), 0, n - 1), 0.0);
+
+        seq = "a";
+        n = seq.length();
+        assertEquals(1, obj.lps(seq.toCharArray(), 0, n - 1), 0.0);
+
+        seq = "abcdeffedcbazyxwvutsrqponmlkjihgfedcba";
+        n = seq.length();
+        assertEquals(13, obj.lps(seq.toCharArray(), 0, n - 1), 0.0);
+    }
+
+    @Test
+    public void TestShortestCommonSequence() {
+        String X = "AGGTB";
+        String Y = "GXTXAYB";
+
+        int[][] lookup = new int[X.length() + 1][Y.length() + 1];
+
+        assertEquals(9, obj.superSeq(X, Y, X.length(), Y.length(), lookup), 0.0);
+
+        X = "apqrstu";
+        Y = "kplrmntuo";
+        lookup = new int[X.length() + 1][Y.length() + 1];
+        assertEquals(12, obj.superSeq(X, Y, X.length(), Y.length(), lookup), 0.0);
+    }
+
+    @Test
     public void TestLSFP() {
 
         String s = "dcddcd";
@@ -169,15 +155,6 @@ public class AppTest {
         s = "pqrstuabcdefffghijkahgjgujgjudykisykiuljiktytertersrgdghfhfhfhxf";
         n = s.length();
         assertEquals(9, obj.longestSubstring(s, n), 0.0);
-    }
-
-    @Test
-    public void TestLVP() {
-        assertEquals(8, obj.LVP("((()()()()(((())", 16), 0.0);
-        assertEquals(0, obj.LVP(")(", 2));
-        assertEquals(0, obj.LVP("", 0));
-        assertEquals(0, obj.LVP("))))))", 6), 0.0);
-        assertEquals(4, obj.LVP("((((())", 7), 0.0);
     }
 
     @Test
@@ -202,22 +179,45 @@ public class AppTest {
     }
 
     @Test
-    public void TestLongestPalindromicSubsequence() {
-        String seq = "abcdefghijklmnopqrstuvwxy";
-        int n = seq.length();
-        assertEquals(1, obj.lps(seq.toCharArray(), 0, n - 1), 0.0);
+    public void TestLVP() {
+        assertEquals(8, obj.LVP("((()()()()(((())", 16), 0.0);
+        assertEquals(0, obj.LVP(")(", 2));
+        assertEquals(0, obj.LVP("", 0));
+        assertEquals(0, obj.LVP("))))))", 6), 0.0);
+        assertEquals(4, obj.LVP("((((())", 7), 0.0);
+    }
 
-        seq = "abcdefghijabcdefghijabcdefghij";
-        n = seq.length();
-        assertEquals(5, obj.lps(seq.toCharArray(), 0, n - 1), 0.0);
+    @Test
+    public void TestEditDistance() {
+        String str1 = "";
+        String str2 = "";
 
-        seq = "a";
-        n = seq.length();
-        assertEquals(1, obj.lps(seq.toCharArray(), 0, n - 1), 0.0);
+        int n = str1.length(), m = str2.length();
+        int[][] dp = new int[n + 1][m + 1];
+        for (int i = 0; i < n + 1; i++)
+            Arrays.fill(dp[i], -1);
+        assertEquals(0, obj.EditDistance(str1, str2, n, m, dp), 0.0);
 
-        seq = "abcdeffedcbazyxwvutsrqponmlkjihgfedcba";
-        n = seq.length();
-        assertEquals(13, obj.lps(seq.toCharArray(), 0, n - 1), 0.0);
+        str1 = "algorithm";
+        str2 = "altruistic";
+
+        n = str1.length();
+        m = str2.length();
+        dp = new int[n + 1][m + 1];
+        for (int i = 0; i < n + 1; i++)
+            Arrays.fill(dp[i], -1);
+        assertEquals(6, obj.EditDistance(str1, str2, n, m, dp), 0.0);
+
+        str1 = "editdistanceusingdynamicprogramming";
+        str2 = "edit";
+
+        n = str1.length();
+        m = str2.length();
+        dp = new int[n + 1][m + 1];
+        for (int i = 0; i < n + 1; i++)
+            Arrays.fill(dp[i], -1);
+        assertEquals(31, obj.EditDistance(str1, str2, n, m, dp), 0.0);
+
     }
 
     @Test
@@ -302,18 +302,6 @@ public class AppTest {
         assertEquals(4, obj.minPalPartition(str));
         str = "abbac";
         assertEquals(1, obj.minPalPartition(str));
-    }
-
-    @Test
-    public void TestSparseSearch() {
-        String arr1[] = { "amdck", "bdhsd", "", "", "", "", "ide" };
-        String x1 = "bdhsd";
-        int n1 = x1.length();
-        assertEquals(1, obj.SparseSearch(arr1, x1, n1));
-        String arr2[] = { "at", "", "", "", "ball", "", "", "car", "", "", "dad", "", "" };
-        String x2 = "ta";
-        int n2 = x1.length();
-        assertEquals(-1, obj.SparseSearch(arr2, x2, n2));
     }
 
     @Test
@@ -472,31 +460,6 @@ public class AppTest {
     }
 
     @Test
-    public void testIsScramble() {
-        // Test Case 1: Valid scramble
-        assertTrue(obj.isScramble("great", "rgeat"));
-
-        // Test Case 2: Invalid scramble
-        assertFalse(obj.isScramble("abcde", "caebd"));
-
-        // Test Case 3: Single character strings
-        assertTrue(obj.isScramble("a", "a"));
-
-        // Test Case 4: Scramble of longer strings
-        assertTrue(obj.isScramble("abcde", "aedcb"));
-
-        // Test Case 5: Invalid scramble with different lengths
-        assertFalse(obj.isScramble("abcde", "abcdef"));
-
-        // Test Case 6: Valid scramble with single character strings
-        assertTrue(obj.isScramble("a", "a"));
-
-        // Test Case 7: Invalid scramble with single character strings
-        assertFalse(obj.isScramble("a", "b"));
-
-    }
-
-    @Test
     public void testAtMostNGivenDigitSet() {
         // Test Case 1
         String[] digits1 = { "1", "3", "5", "7" };
@@ -513,16 +476,6 @@ public class AppTest {
         int n3 = 8;
         assertEquals(1, obj.atMostNGivenDigitSet(digits3, n3));
 
-    }
-
-    @Test
-    public void TestminStickers() {
-        String stickers[] = { "with", "example", "science" };
-        String target = "thehat";
-        assertEquals(3, obj.minStickers(stickers, target));
-        String stickers1[] = { "notice", "possible" };
-        String target1 = "basicbasic";
-        assertEquals(-1, obj.minStickers(stickers1, target1));
     }
 
     @Test
@@ -544,6 +497,16 @@ public class AppTest {
                 Arrays.asList(1, 0),
                 Arrays.asList(0, 1)));
         assertEquals(ans2, obj.palindromePairs(words2));
+    }
+
+    @Test
+    public void TestminStickers() {
+        String stickers[] = { "with", "example", "science" };
+        String target = "thehat";
+        assertEquals(3, obj.minStickers(stickers, target));
+        String stickers1[] = { "notice", "possible" };
+        String target1 = "basicbasic";
+        assertEquals(-1, obj.minStickers(stickers1, target1));
     }
 
     @Test

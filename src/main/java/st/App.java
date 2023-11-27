@@ -4,103 +4,6 @@ import java.util.*;
 
 public class App {
 
-	// EDIT DISTANCE
-	int EditDistance(String s1, String s2, int n, int m, int[][] dp) {
-
-		// If any String is empty,
-		// return the remaining characters of other String
-		if (n == 0)
-			return m;
-		if (m == 0)
-			return n;
-
-		// To check if the recursive tree
-		// for given n & m has already been executed
-		if (dp[n][m] != -1)
-			return dp[n][m];
-
-		// If characters are equal, execute
-		// recursive function for n-1, m-1
-		if (s1.charAt(n - 1) == s2.charAt(m - 1)) {
-			return dp[n][m] = EditDistance(s1, s2, n - 1, m - 1, dp);
-		}
-		// If characters are not equal, we need to
-		// find the minimum cost out of all 3 operations.
-		else {
-
-			int insert, del, replace; // temp variables
-
-			insert = EditDistance(s1, s2, n, m - 1, dp);
-			del = EditDistance(s1, s2, n - 1, m, dp);
-			replace = EditDistance(s1, s2, n - 1, m - 1, dp);
-			return dp[n][m] = 1 + Math.min(insert, Math.min(del, replace));
-		}
-	}
-
-	// KMP ALGORITHM
-	int KMPSearch(String pat, String txt) {
-		int M = pat.length();
-		int N = txt.length();
-
-		// create lps[] that will hold the longest
-		// prefix suffix values for pattern
-		int lps[] = new int[M];
-		int j = 0; // index for pat[]
-
-		// Preprocess the pattern (calculate lps[]
-		// array)
-		// computeLPSArray(pat, M, lps);
-
-		int len = 0;
-		int i = 1;
-		lps[0] = 0; // lps[0] is always 0
-
-		// the loop calculates lps[i] for i = 1 to M-1
-		while (i < M) {
-			if (pat.charAt(i) == pat.charAt(len)) {
-				len++;
-				lps[i] = len;
-				i++;
-			} else // (pat[i] != pat[len])
-			{
-
-				if (len != 0) {
-					len = lps[len - 1];
-
-					// Also, note that we do not increment
-					// i here
-				} else // if (len == 0)
-				{
-					lps[i] = len;
-					i++;
-				}
-			}
-		}
-
-		i = 0; // index for txt[]
-		while ((N - i) >= (M - j)) {
-			if (pat.charAt(j) == txt.charAt(i)) {
-				j++;
-				i++;
-			}
-			if (j == M) {
-				return i - j;
-			}
-
-			// mismatch after j matches
-			else if (i < N && pat.charAt(j) != txt.charAt(i)) {
-				// Do not match lps[0..lps[j-1]] characters,
-				// they will match anyway
-				if (j != 0)
-					j = lps[j - 1];
-				else
-					i = i + 1;
-			}
-		}
-		return -1;
-	}
-
-	// RABIN KARP
 	int RabinKarp(String pat, String txt, int q) {
 		int d = 256;
 		int M = pat.length();
@@ -156,7 +59,6 @@ public class App {
 		return -1;
 	}
 
-	// Z-ALGORITHM
 	int ZAlgorithm(String text, String pattern) {
 
 		// Create concatenated string "P$T"
@@ -231,29 +133,68 @@ public class App {
 		}
 	}
 
-	// SHORTEST COMMOM SUBSEQUENCE
-	int superSeq(String X, String Y, int n, int m, int[][] lookup) {
+	int KMPSearch(String pat, String txt) {
+		int M = pat.length();
+		int N = txt.length();
 
-		if (m == 0 || n == 0) {
-			lookup[n][m] = n + m;
+		// create lps[] that will hold the longest
+		// prefix suffix values for pattern
+		int lps[] = new int[M];
+		int j = 0; // index for pat[]
+
+		// Preprocess the pattern (calculate lps[]
+		// array)
+		// computeLPSArray(pat, M, lps);
+
+		int len = 0;
+		int i = 1;
+		lps[0] = 0; // lps[0] is always 0
+
+		// the loop calculates lps[i] for i = 1 to M-1
+		while (i < M) {
+			if (pat.charAt(i) == pat.charAt(len)) {
+				len++;
+				lps[i] = len;
+				i++;
+			} else // (pat[i] != pat[len])
+			{
+
+				if (len != 0) {
+					len = lps[len - 1];
+
+					// Also, note that we do not increment
+					// i here
+				} else // if (len == 0)
+				{
+					lps[i] = len;
+					i++;
+				}
+			}
 		}
 
-		if (lookup[n][m] == 0)
-			if (X.charAt(n - 1) == Y.charAt(m - 1)) {
-				lookup[n][m] = superSeq(X, Y, n - 1, m - 1, lookup)
-						+ 1;
+		i = 0; // index for txt[]
+		while ((N - i) >= (M - j)) {
+			if (pat.charAt(j) == txt.charAt(i)) {
+				j++;
+				i++;
+			}
+			if (j == M) {
+				return i - j;
 			}
 
-			else {
-				lookup[n][m] = Math.min(
-						superSeq(X, Y, n - 1, m, lookup) + 1,
-						superSeq(X, Y, n, m - 1, lookup) + 1);
+			// mismatch after j matches
+			else if (i < N && pat.charAt(j) != txt.charAt(i)) {
+				// Do not match lps[0..lps[j-1]] characters,
+				// they will match anyway
+				if (j != 0)
+					j = lps[j - 1];
+				else
+					i = i + 1;
 			}
-
-		return lookup[n][m];
+		}
+		return -1;
 	}
 
-	// LONGEST COMMON SUBSEQUENCE
 	int LCS(char[] X, char[] Y, int m, int n) {
 		int L[][] = new int[m + 1][n + 1];
 
@@ -279,7 +220,47 @@ public class App {
 		return (a > b) ? a : b;
 	}
 
-	// LONGEST SUBSTRING TO FORM A PALINDROME
+	int lps(char seq[], int i, int j) {
+		// Base Case 1: If there is only 1 character
+		if (i == j) {
+			return 1;
+		}
+
+		// Base Case 2: If there are only 2 characters and both are same
+		if (seq[i] == seq[j] && i + 1 == j) {
+			return 2;
+		}
+
+		// If the first and last characters match
+		if (seq[i] == seq[j]) {
+			return lps(seq, i + 1, j - 1) + 2;
+		}
+
+		// If the first and last characters do not match
+		return max(lps(seq, i, j - 1), lps(seq, i + 1, j));
+	}
+
+	int superSeq(String X, String Y, int n, int m, int[][] lookup) {
+
+		if (m == 0 || n == 0) {
+			lookup[n][m] = n + m;
+		}
+
+		if (lookup[n][m] == 0)
+			if (X.charAt(n - 1) == Y.charAt(m - 1)) {
+				lookup[n][m] = superSeq(X, Y, n - 1, m - 1, lookup)
+						+ 1;
+			}
+
+			else {
+				lookup[n][m] = Math.min(
+						superSeq(X, Y, n - 1, m, lookup) + 1,
+						superSeq(X, Y, n, m - 1, lookup) + 1);
+			}
+
+		return lookup[n][m];
+	}
+
 	int longestSubstring(String s, int n) {
 
 		// To keep track of the last
@@ -337,7 +318,34 @@ public class App {
 		return answer;
 	}
 
-	// LONGEST VALID PARANTHESIS
+	String longestCommonPrefix(String[] a) {
+		int size = a.length;
+
+		/* if size is 0, return empty string */
+		if (size == 0)
+			return "";
+
+		if (size == 1)
+			return a[0];
+
+		/* sort the array of strings */
+		Arrays.sort(a);
+
+		/* find the minimum length from first and last string */
+		int end = Math.min(a[0].length(), a[size - 1].length());
+
+		/*
+		 * find the common prefix between the first and
+		 * last string
+		 */
+		int i = 0;
+		while (i < end && a[0].charAt(i) == a[size - 1].charAt(i))
+			i++;
+
+		String pre = a[0].substring(0, i);
+		return pre;
+	}
+
 	int LVP(String s, int n) {
 
 		// Variables for left and right
@@ -398,57 +406,38 @@ public class App {
 		return maxlength;
 	}
 
-	// LONGEST COMMON PREFIX
-	String longestCommonPrefix(String[] a) {
-		int size = a.length;
+	int EditDistance(String s1, String s2, int n, int m, int[][] dp) {
 
-		/* if size is 0, return empty string */
-		if (size == 0)
-			return "";
+		// If any String is empty,
+		// return the remaining characters of other String
+		if (n == 0)
+			return m;
+		if (m == 0)
+			return n;
 
-		if (size == 1)
-			return a[0];
+		// To check if the recursive tree
+		// for given n & m has already been executed
+		if (dp[n][m] != -1)
+			return dp[n][m];
 
-		/* sort the array of strings */
-		Arrays.sort(a);
+		// If characters are equal, execute
+		// recursive function for n-1, m-1
+		if (s1.charAt(n - 1) == s2.charAt(m - 1)) {
+			return dp[n][m] = EditDistance(s1, s2, n - 1, m - 1, dp);
+		}
+		// If characters are not equal, we need to
+		// find the minimum cost out of all 3 operations.
+		else {
 
-		/* find the minimum length from first and last string */
-		int end = Math.min(a[0].length(), a[size - 1].length());
+			int insert, del, replace; // temp variables
 
-		/*
-		 * find the common prefix between the first and
-		 * last string
-		 */
-		int i = 0;
-		while (i < end && a[0].charAt(i) == a[size - 1].charAt(i))
-			i++;
-
-		String pre = a[0].substring(0, i);
-		return pre;
+			insert = EditDistance(s1, s2, n, m - 1, dp);
+			del = EditDistance(s1, s2, n - 1, m, dp);
+			replace = EditDistance(s1, s2, n - 1, m - 1, dp);
+			return dp[n][m] = 1 + Math.min(insert, Math.min(del, replace));
+		}
 	}
 
-	// LONGEST PALINDROMIC SUBSEQUENCE}
-	int lps(char seq[], int i, int j) {
-		// Base Case 1: If there is only 1 character
-		if (i == j) {
-			return 1;
-		}
-
-		// Base Case 2: If there are only 2 characters and both are same
-		if (seq[i] == seq[j] && i + 1 == j) {
-			return 2;
-		}
-
-		// If the first and last characters match
-		if (seq[i] == seq[j]) {
-			return lps(seq, i + 1, j - 1) + 2;
-		}
-
-		// If the first and last characters do not match
-		return max(lps(seq, i, j - 1), lps(seq, i + 1, j));
-	}
-
-	// MANACHERS ALGORITHM
 	String ManachersAlgorithm(String text) {
 		int N = text.length();
 		if (N == 0)
@@ -595,7 +584,6 @@ public class App {
 		return -1;
 	}
 
-	// SEQUENCE ALIGNMENT PROBLEM
 	int SequenceAlignment(String x, String y, int pxy, int pgap) {
 		int i, j; // initialising variables
 
@@ -694,7 +682,6 @@ public class App {
 		return dp[m][n];
 	}
 
-	// WILDCARD PATTERN MATCHING
 	boolean WildcardPattern(String str, String pattern,
 			int n, int m) {
 		// empty pattern can only match with
@@ -749,7 +736,6 @@ public class App {
 		return lookup[n][m];
 	}
 
-	// PALINDROME PARTITIONING
 	int minPalPartition(String str) {
 		// Get the length of the string
 		int n = str.length();
@@ -813,54 +799,6 @@ public class App {
 		return C[n - 1];
 	}
 
-	// SPARSE SEARCH
-	int binarySearch(String arr[], int low, int high, String x) {
-		if (low > high)
-			return -1;
-
-		int mid = (low + high) / 2;
-
-		// Modified Part
-		if (arr[mid] == "") {
-			int left = mid - 1;
-			int right = mid + 1;
-
-			/* Search for both side for a non empty string */
-			while (true) {
-
-				/* No non-empty string on both sides */
-				if (left < low && right > high)
-					return -1;
-
-				if (left >= low && arr[left] != "") {
-					mid = left;
-					break;
-				}
-
-				else if (right <= high && arr[right] != "") {
-					mid = right;
-					break;
-				}
-
-				left--;
-				right++;
-			}
-		}
-
-		/* Normal Binary Search */
-		if (arr[mid] == x)
-			return mid;
-		else if (x.compareTo(arr[mid]) < 0)
-			return binarySearch(arr, low, mid - 1, x);
-		else
-			return binarySearch(arr, mid + 1, high, x);
-	}
-
-	int SparseSearch(String arr[], String x, int n) {
-		return binarySearch(arr, 0, n - 1, x);
-	}
-
-	// LONGEST REPEATING SUBSEQUENCE
 	int LongestRepeatingSubSeq(String str) {
 		int n = str.length();
 
@@ -882,7 +820,6 @@ public class App {
 		return dp[n][n];
 	}
 
-	// LONGEST PREFIX SUFFIX
 	int longestPrefixSuffix(String s) {
 		int n = s.length();
 
@@ -951,9 +888,6 @@ public class App {
 		return res;
 	}
 
-	// Function for finding number of ways to
-	// create string with length N and atmost
-	// K contiguous vowels
 	int KVowelWords(int N, int K) {
 		int i, j;
 		int MOD = 1000000007;
@@ -999,7 +933,6 @@ public class App {
 		return sum;
 	}
 
-	// LEFT AND RIGHT ROTATION OF A STRING
 	String leftrotate(String str1, int n) {
 
 		// creating extended string and index for new
@@ -1013,13 +946,11 @@ public class App {
 		return Lfirst;
 	}
 
-	// Rotating the string using extended string
 	String rightrotate(String str1, int n) {
 		return leftrotate(str1, str1.length() - n);
 	}
 	// LEFT AND RIGHT ROTATION OF A STRING
 
-	// Reverse vowels in a given string
 	boolean isVowel(char c) {
 		return (c == 'a' || c == 'A' || c == 'e'
 				|| c == 'E' || c == 'i' || c == 'I'
@@ -1027,7 +958,6 @@ public class App {
 				|| c == 'U');
 	}
 
-	// Function to reverse order of vowels
 	String reverseVowel(String str) {
 		// Start two indexes from two corners
 		// and move toward each other
@@ -1118,7 +1048,6 @@ public class App {
 		return res;
 	}
 
-	// Concatenated Words
 	private boolean dfs(final String word, int length, final boolean[] visited, final Set<String> dictionary) {
 		if (length == word.length()) {
 			return true;
@@ -1157,220 +1086,145 @@ public class App {
 		return answer;
 	}
 
-	// Word break-I
 	public boolean wordBreak1(String s, List<String> wordDict) {
-        Map<String, Boolean> dp = new HashMap<>();
-        Set<String> dict = new HashSet<>(wordDict);
-        return util1(0, s.length() - 1, s, dict, dp);
-    }
+		Map<String, Boolean> dp = new HashMap<>();
+		Set<String> dict = new HashSet<>(wordDict);
+		return util1(0, s.length() - 1, s, dict, dp);
+	}
 
-    public boolean util1(int i, int j, String s, Set<String> dict, Map<String, Boolean> dp) {
-        if (i > j) {
-            return true;
-        }
+	public boolean util1(int i, int j, String s, Set<String> dict, Map<String, Boolean> dp) {
+		if (i > j) {
+			return true;
+		}
 
-        String key = i + "|" + j;
-        if (dp.containsKey(key)) {
-            return dp.get(key);
-        }
+		String key = i + "|" + j;
+		if (dp.containsKey(key)) {
+			return dp.get(key);
+		}
 
-        if (dict.contains(s.substring(i, j + 1))) {
-            dp.put(key, true);
-            return true;
-        }
+		if (dict.contains(s.substring(i, j + 1))) {
+			dp.put(key, true);
+			return true;
+		}
 
-        boolean ret = false;
-        for (int br = i; br <= j - 1; br++) {
-            boolean cur = util1(i, br, s, dict, dp) && util1(br + 1, j, s, dict, dp);
-            ret = ret || cur;
-        }
+		boolean ret = false;
+		for (int br = i; br <= j - 1; br++) {
+			boolean cur = util1(i, br, s, dict, dp) && util1(br + 1, j, s, dict, dp);
+			ret = ret || cur;
+		}
 
-        dp.put(key, ret);
-        return ret;
-    }
+		dp.put(key, ret);
+		return ret;
+	}
 
-	// Word break-II
 	public List<String> wordBreak2(String s, List<String> wordDict) {
-        Map<String, List<String>> dp = new HashMap<>();
-        Set<String> dict = new HashSet<>(wordDict);
+		Map<String, List<String>> dp = new HashMap<>();
+		Set<String> dict = new HashSet<>(wordDict);
 
-        return util2(0, s.length() - 1, s, dict, dp);
-    }
+		return util2(0, s.length() - 1, s, dict, dp);
+	}
 
-    public List<String> util2(int i, int j, String s, Set<String> dict, Map<String, List<String>> dp) {
-        if (i > j) {
-            List<String> ret = new ArrayList<>();
-            ret.add(""); // Add an empty string to indicate a valid break
-            return ret;
-        }
+	public List<String> util2(int i, int j, String s, Set<String> dict, Map<String, List<String>> dp) {
+		if (i > j) {
+			List<String> ret = new ArrayList<>();
+			ret.add(""); // Add an empty string to indicate a valid break
+			return ret;
+		}
 
-        String key = i + "|" + j;
-        if (dp.containsKey(key)) {
-            return dp.get(key);
-        }
+		String key = i + "|" + j;
+		if (dp.containsKey(key)) {
+			return dp.get(key);
+		}
 
-        Set<String> retList = new HashSet<>();
+		Set<String> retList = new HashSet<>();
 
-        for (int br = i; br <= j - 1; br++) {
-            List<String> left = util2(i, br, s, dict, dp);
-            List<String> right = util2(br + 1, j, s, dict, dp);
+		for (int br = i; br <= j - 1; br++) {
+			List<String> left = util2(i, br, s, dict, dp);
+			List<String> right = util2(br + 1, j, s, dict, dp);
 
-            if (!left.isEmpty() && !right.isEmpty()) {
-                for (String l : left) {
-                    for (String r : right) {
-                        String toAdd = l + " " + r;
-                        retList.add(toAdd);
-                    }
-                }
-            }
-        }
+			if (!left.isEmpty() && !right.isEmpty()) {
+				for (String l : left) {
+					for (String r : right) {
+						String toAdd = l + " " + r;
+						retList.add(toAdd);
+					}
+				}
+			}
+		}
 
-        List<String> ret = new ArrayList<>(retList);
+		List<String> ret = new ArrayList<>(retList);
 
-        // Check if the substring from i to j is a valid word in the dictionary
-        if (dict.contains(s.substring(i, j + 1))) {
-            ret.add(s.substring(i, j + 1));
-        }
+		// Check if the substring from i to j is a valid word in the dictionary
+		if (dict.contains(s.substring(i, j + 1))) {
+			ret.add(s.substring(i, j + 1));
+		}
 
-        dp.put(key, ret);
-        return ret;
-    }
-	// Scramble String
-	public boolean isScramble(String s1, String s2) {
-        Map<String, Boolean> cache = new HashMap<>();
-        return isScrambleHelper(s1, s2, cache);
-    }
+		dp.put(key, ret);
+		return ret;
+	}
 
-    private boolean isScrambleHelper(String s1, String s2, Map<String, Boolean> cache) {
-        // Check if this combination is already validated
-        // Note that given the nature of the problem, a separator is not required in the key
-        String key1 = s1 + s2;
-        if (cache.containsKey(key1)) {
-            return cache.get(key1);
-        }
-
-        // Single character
-        if (s1.length() == 1 && s1.equals(s2)) {
-            return true;
-        }
-
-        // String is already the same
-        if (s1.equals(s2)) {
-            return true;
-        }
-
-        // Double characters but reversed
-        if (s1.length() == 2) {
-            return s1.charAt(0) == s2.charAt(1) && s1.charAt(1) == s2.charAt(0);
-        }
-
-        // One to one forward comparison
-        int[] list11 = new int[26];
-        int[] list21 = new int[26];
-
-        // One to one diagonal comparison
-        int[] list12 = new int[26];
-        int[] list22 = new int[26];
-
-        String key2 = s2 + s1;
-        for (int i = 0; i < s1.length() - 1; i++) {
-            list11[s1.charAt(i) - 'a']++;
-            list21[s2.charAt(i) - 'a']++;
-
-            list12[s1.charAt(s1.length() - i - 1) - 'a']++;
-            list22[s2.charAt(s2.length() - i - 1) - 'a']++;
-
-            // If forward split is a match
-            if (Arrays.equals(list11, list21) && isScrambleHelper(s1.substring(0, i + 1), s2.substring(0, i + 1), cache)
-                    && isScrambleHelper(s1.substring(i + 1), s2.substring(i + 1), cache)) {
-                // Update the forward and reverse map combination
-                cache.put(key1, true);
-                cache.put(key2, true);
-                return true;
-            }
-
-            // If diagonal split is a match
-            if ((Arrays.equals(list11, list22) || Arrays.equals(list12, list21))
-                    && isScrambleHelper(s1.substring(0, i + 1), s2.substring(s2.length() - i - 1), cache)
-                    && isScrambleHelper(s1.substring(i + 1), s2.substring(0, s2.length() - i - 1), cache)) {
-                // Update the forward and reverse map combination
-                cache.put(key1, true);
-                cache.put(key2, true);
-                return true;
-            }
-
-            // Check for further matches if the previous one failed
-        }
-
-        // Update the forward and reverse map combination
-        cache.put(key1, false);
-        cache.put(key2, false);
-        return false;
-    }
-
-	// Numbers At Most N Given Digit Set
 	public int atMostNGivenDigitSet(String[] D, int N) {
-        int k = D.length;
-        int[] digits = new int[k];
-        for (int i = 0; i < k; i++) {
-            digits[i] = Integer.parseInt(D[i]);
-        }
+		int k = D.length;
+		int[] digits = new int[k];
+		for (int i = 0; i < k; i++) {
+			digits[i] = Integer.parseInt(D[i]);
+		}
 
-        int cnt = 0;
-        String s = String.valueOf(N);
-        int len = s.length();
-        int[] rates = new int[len];
-        rates[0] = 1;
+		int cnt = 0;
+		String s = String.valueOf(N);
+		int len = s.length();
+		int[] rates = new int[len];
+		rates[0] = 1;
 
-        // Calculate rates for less digits: k + k^2 + .. + k^(len-1)
-        for (int i = 0; i < len - 1; i++) {
-            rates[i + 1] = rates[i] * k;
-            cnt += rates[i + 1];
-        }
+		// Calculate rates for less digits: k + k^2 + .. + k^(len-1)
+		for (int i = 0; i < len - 1; i++) {
+			rates[i + 1] = rates[i] * k;
+			cnt += rates[i + 1];
+		}
 
-        // Add count for same digits
-        cnt += helper(digits, rates, s);
-        return cnt;
-    }
+		// Add count for same digits
+		cnt += helper(digits, rates, s);
+		return cnt;
+	}
 
-    private int helper(int[] digits, int[] rates, String s) {
-        if (s.length() == 0) {
-            return 1;
-        }
+	private int helper(int[] digits, int[] rates, String s) {
+		if (s.length() == 0) {
+			return 1;
+		}
 
-        int n = s.charAt(0) - '0';
-        int cnt = countLT(digits, n) * rates[s.length() - 1];
+		int n = s.charAt(0) - '0';
+		int cnt = countLT(digits, n) * rates[s.length() - 1];
 
-        if (exists(digits, n)) {
-            cnt += helper(digits, rates, s.substring(1));
-        }
+		if (exists(digits, n)) {
+			cnt += helper(digits, rates, s.substring(1));
+		}
 
-        return cnt;
-    }
+		return cnt;
+	}
 
-    private int countLT(int[] digits, int n) {
-        int cnt = 0;
-        for (int d : digits) {
-            if (d < n) {
-                cnt++;
-            } else {
-                break;
-            }
-        }
-        return cnt;
-    }
+	private int countLT(int[] digits, int n) {
+		int cnt = 0;
+		for (int d : digits) {
+			if (d < n) {
+				cnt++;
+			} else {
+				break;
+			}
+		}
+		return cnt;
+	}
 
-    private boolean exists(int[] digits, int n) {
-        for (int d : digits) {
-            if (d == n) {
-                return true;
-            }
-            if (d > n) {
-                break;
-            }
-        }
-        return false;
-    }
+	private boolean exists(int[] digits, int n) {
+		for (int d : digits) {
+			if (d == n) {
+				return true;
+			}
+			if (d > n) {
+				break;
+			}
+		}
+		return false;
+	}
 
 	public String reverseStr(String str) {
 		StringBuilder sb = new StringBuilder(str);
@@ -1390,7 +1244,6 @@ public class App {
 		return true;
 	}
 
-	// Returns indices i, j (i!=j) such that words[i] + words[j] is a palindrome
 	public List<List<Integer>> palindromePairs(String[] words) {
 		List<List<Integer>> res = new ArrayList<List<Integer>>();
 		if (words == null || words.length == 0) {
@@ -1474,7 +1327,6 @@ public class App {
 		return sb.toString();
 	}
 
-	//Forming a target word by using min number of stickers
 	public int minStickers(String[] stickers, String target) {
 		// Optimization 1: Maintain frequency only for characters present in target
 		int[] targetNaiveCount = new int[26];
@@ -1545,40 +1397,43 @@ public class App {
 	}
 
 	public int kSimilarity(String s1, String tar) {
-        Queue<String> q = new ArrayDeque<>();
-        q.add(s1);
-        
-        int lvl = 0;
-        while(q.size() > 0){
-            int size = q.size();
-            while(size-- > 0){
-                String s = q.remove();
-                if(s.equals(tar))return lvl;
-                
-                
-                int i = 0;
-                while(s.charAt(i) == tar.charAt(i))i++;
-                
-                int j = i;
-                
-                while(j < s.length()){
-                    if(s.charAt(j) == tar.charAt(i) && tar.charAt(j) != s.charAt(j)){
-                        StringBuilder sb = new StringBuilder(s);
-                        sb.setCharAt(i, s.charAt(j));
-                        sb.setCharAt(j, s.charAt(i));
-                        
-						//A small optimization.
-                        if(sb.toString().equals(tar))return lvl+1;
-                        
-                        q.add(sb.toString());
-                    }
-                    j++;
-                }
-            }
-            lvl++;
-        }
-        return lvl;
-    }
+		Queue<String> q = new ArrayDeque<>();
+		q.add(s1);
+
+		int lvl = 0;
+		while (q.size() > 0) {
+			int size = q.size();
+			while (size-- > 0) {
+				String s = q.remove();
+				if (s.equals(tar))
+					return lvl;
+
+				int i = 0;
+				while (s.charAt(i) == tar.charAt(i))
+					i++;
+
+				int j = i;
+
+				while (j < s.length()) {
+					if (s.charAt(j) == tar.charAt(i) && tar.charAt(j) != s.charAt(j)) {
+						StringBuilder sb = new StringBuilder(s);
+						sb.setCharAt(i, s.charAt(j));
+						sb.setCharAt(j, s.charAt(i));
+
+						// A small optimization.
+						if (sb.toString().equals(tar))
+							return lvl + 1;
+
+						q.add(sb.toString());
+					}
+					j++;
+				}
+			}
+			lvl++;
+		}
+		return lvl;
+	}
+
 	// Driver code to test above
 	public static void main(String args[]) {
 
